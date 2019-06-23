@@ -30,6 +30,24 @@ def refresh():
     pass
 
 
+def fix():
+    add = 0
+    innings_str = innings.get() + "回 " + one_third.get()
+    er_str = str(er.get())
+    money_str = money["text"]
+    calc.insert("", "end", values=(add, innings_str, er_str, money_str))
+
+    innings_var = tk.StringVar(value="0")
+    one_third_var = tk.StringVar(value="0/3")
+    er_var = tk.StringVar(value="0")
+
+    innings["textvariable"] = innings_var
+    one_third["textvariable"] = one_third_var
+    er["textvariable"] = er_var
+
+    refresh()
+
+
 root = tk.Tk()
 root.geometry("640x480")
 root.title("ワンナウツ契約計算機")
@@ -53,21 +71,23 @@ display = tk.Label(
 display.pack(fill=tk.X)
 
 mid = tk.Frame(root)
+
 update = tk.Button(mid, text="更新", command=refresh)
-innings = tk.Spinbox(mid, from_=0, to=15, increment=1, width=4)
+innings = tk.Spinbox(
+    mid, from_=0, to=15, increment=1, width=4)
 ary = ["0/3", "1/3", "2/3"]
 one_third = tk.Spinbox(mid, value=ary, width=4, wrap=True)
 er = tk.Spinbox(mid, from_=0, to=99, width=4)
 # earned run = 自責点（英語）
 money = tk.Label(mid, text="1試合の収支", relief="groove", width=16)
-fix = tk.Button(mid, text="<<確定>>")
+fix_button = tk.Button(mid, text="<<確定>>", command=fix)
 
 update.pack(padx=5, side="left")
 innings.pack(side="left")
 one_third.pack(side="left")
 er.pack(padx=10, side="left")
 money.pack(side="left")
-fix.pack(padx=5, side="right")
+fix_button.pack(padx=5, side="right")
 
 mid.pack(pady=5, fill=tk.X,)
 
