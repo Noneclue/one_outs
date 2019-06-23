@@ -8,9 +8,26 @@ def appexit():
 
 
 def update_money():
-    getset = tk.StringVar()
-    getset = innings.get()
-    money["text"] = getset
+    income = tk.StringVar()
+    ini = int(innings.get())
+    third = 0
+    lost = int(er.get())
+    get_one_third = one_third.get()
+
+    if get_one_third == "1/3":
+        third = 1
+    elif get_one_third == "2/3":
+        third = 2
+    else:
+        third = 0
+
+    income = str(500 * ((ini * 3) + third) - 5000 * lost)
+    money["text"] = income
+    root.after(300, update_money)
+
+
+def refresh():
+    pass
 
 
 root = tk.Tk()
@@ -36,7 +53,7 @@ display = tk.Label(
 display.pack(fill=tk.X)
 
 mid = tk.Frame(root)
-update = tk.Button(mid, text="更新", command=update_money)
+update = tk.Button(mid, text="更新", command=refresh)
 innings = tk.Spinbox(mid, from_=0, to=15, increment=1, width=4)
 ary = ["0/3", "1/3", "2/3"]
 one_third = tk.Spinbox(mid, value=ary, width=4, wrap=True)
@@ -78,11 +95,9 @@ calc.column(2, minwidth=80, width=120)
 calc.column(3, minwidth=60, width=120)
 calc.column(4, minwidth=120, width=240)
 
-calc.insert("", "end", values=("5/1", "9", "0"))
-calc.insert("", "end", values=("5/6", "7 1/3", "3"))
-calc.insert("", "end", values=("5/12", "6 2/3", "5"))
-
 bot.pack(fill=tk.BOTH)
 calc.pack()
+
+update_money()
 
 root.mainloop()
