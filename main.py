@@ -49,8 +49,11 @@ def fix():
 
 
 root = tk.Tk()
-root.geometry("640x480")
+root.geometry("640x240")
 root.title("ワンナウツ契約計算機")
+
+root.minsize(480, 200)
+root.maxsize(1280, 480)
 
 menubar = tk.Menu(root)
 menu1 = tk.Menu(menubar, tearoff=False)
@@ -61,6 +64,7 @@ menu1.add_command(label="終了", command=appexit)
 menubar.add_cascade(label="ファイル", menu=menu1)
 root["menu"] = menubar
 
+# グリーンバック用ラベル
 display = tk.Label(
     root,
     text="ここに年俸が表示されます",
@@ -70,6 +74,7 @@ display = tk.Label(
     )
 display.pack(fill=tk.X)
 
+# 成績登録用スピンボックスと登録ボタン
 mid = tk.Frame(root)
 
 update = tk.Button(mid, text="更新", command=refresh)
@@ -91,33 +96,32 @@ fix_button.pack(padx=5, side="right")
 
 mid.pack(pady=5, fill=tk.X,)
 
-bot = tk.Canvas(root)
-bar = tk.Scrollbar(root, orient=tk.VERTICAL)
-bar.pack(side=tk.RIGHT, fill=tk.Y)
-bar.config(command=bot.yview)
-
-bot.config(yscrollcommand=bar.set)
-bot.config(scrollregion=bot.bbox("all"))
+# 成績一覧用ツリービューとスクロールバー
+bot = tk.Frame(root, relief="sunken")
+bot.pack(fill=tk.BOTH)
 
 calc = ttk.Treeview(bot)
-bot.create_window((0, 0), window=calc, anchor=tk.NW, width=bot.cget("width"))
-
 calc["columns"] = (1, 2, 3, 4)
 calc["show"] = "headings"
+calc["height"] = 18
 
 calc.heading(1, text="登板機会")
 calc.heading(2, text="投球回数")
 calc.heading(3, text="自責点")
 calc.heading(4, text="金銭収支")
 
-calc.column(1, minwidth=60, width=80)
-calc.column(2, minwidth=80, width=120)
-calc.column(3, minwidth=60, width=120)
+calc.column(1, minwidth=60, width=60)
+calc.column(2, minwidth=80, width=160)
+calc.column(3, minwidth=80, width=160)
 calc.column(4, minwidth=120, width=240)
 
-bot.pack(fill=tk.BOTH)
-calc.pack(fill=tk.BOTH)
+y_bar = tk.Scrollbar(bot, orient=tk.VERTICAL, command=calc.yview)
+y_bar.pack(side=tk.RIGHT, fill=tk.Y)
 
+calc.pack(fill=tk.BOTH)
+calc.config(yscrollcommand=y_bar.set)
+
+# 成績更新用　スピンボックスのイベントに入れるべきか？
 update_money()
 
 root.mainloop()
