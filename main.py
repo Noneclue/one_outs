@@ -116,7 +116,7 @@ calc.column(3, minwidth=60, width=120)
 calc.column(4, minwidth=120, width=240)
 
 bot.pack(fill=tk.BOTH)
-calc.pack()
+calc.pack(fill=tk.BOTH)
 
 update_money()
 
